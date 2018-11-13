@@ -227,7 +227,7 @@ true
 
 #### Substring Expansion
 
-El foramte basico es : **${parameter:offset:length}**, donde *offset* y *length* son dos enteros, y *length* es opcional. Basicamente nos permite sustraer una cadena de caracteres desde el valor de *parameter*. Aca van algunos ejemplos ( los mismo que en la pagina de GNU ):
+El formato basico es : **${parameter:offset:length}**, donde *offset* y *length* son dos enteros, y *length* es opcional. Basicamente nos permite sustraer una cadena de caracteres desde el valor de *parameter*. Aca van algunos ejemplos ( los mismo que en la pagina de GNU ):
 
 ```
 string=01234567890abcdefgh
