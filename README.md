@@ -4,7 +4,32 @@ Esta guia busca ser una referencia rapida sobre los distintos tipos de expansion
 
 * https://www.gnu.org/software/bash/manual/html_node/Shell-Expansions.html
 
-El orden en que realiza las mismas es :
+Los contenidos de la misma funcionaran siempre y cuando utilicemos una version de Bash superior a la version 4.
+
+Para saber si estamos utilizando Bash podemos correr :
+
+```
+echo $0
+-bash
+
+```
+
+Y para saber la version del mismo :
+
+```
+bash --version
+  GNU bash, version 4.2.46(2)-release (x86_64-redhat-linux-gnu)
+  Copyright (C) 2011 Free Software Foundation, Inc.
+  License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+  This is free software; you are free to change and redistribute it.
+  There is NO WARRANTY, to the extent permitted by law.
+
+```
+
+## Orden de las expansiones
+
+El orden en que realiza las expansiones es :
 
 1. Brace expansion 
 2. Tilde expansion
