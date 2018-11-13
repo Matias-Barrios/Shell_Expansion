@@ -153,7 +153,7 @@ echo ${!val}
 
 #### Testeo de nulidad
 
-Se puede testear los contenidos de dos valores y devolver uno de ellos dependiendo de cierta logica. Por ejemplo, en este caso, se testea si el valor del primer parametro es nulo, y en caso afirmativo, se devuelve el valor del segundo parametro :
+Se puede testear los contenidos de dos valores y devolver uno de ellos dependiendo de cierta logica. Por ejemplo, en este caso, se testea si el valor del primer parametro es nulo, y en caso afirmativo, se devuelve el valor del segundo parametro utilizando el simbolo **-** :
 
 ```
 echo ${num:-13}   ## Aca el valor de num nunca fue seteado, por lo tanto se devuelve un 13
@@ -189,3 +189,162 @@ unset no_existo
 echo ${no_existo:?'La variable no existe!'}
 -bash: no_existo: La variable no existe!
 ```
+
+Con el simbolo de **+**, podemos realizar el inverso de **-**; en este caso, podemos devolver el valor del segundo parametro simpre y cuando el valor del primer parametro no sea nulo, por ejemplo :
+
+```
+echo ${num:+'true'}
+                     ## Nos devuelve vacio, ya que num es nulo
+num="1"              ## Asignamos algo en num
+echo ${num:+'true'}  ## Y ahora si devolvemos el valor del segundo parametro, o sea True
+true
+```
+
+#### Substring Expansion
+
+El foramte basico es : **${parameter:offset:length}**, donde *offset* y *length* son dos enteros, y *length* es opcional. Basicamente nos permite sustraer una cadena de caracteres desde el valor de *parameter*. Aca van algunos ejemplos ( los mismo que en la pagina de GNU ):
+
+```
+string=01234567890abcdefgh
+echo ${string:7}
+7890abcdefgh
+echo ${string:7:0}
+
+echo ${string:7:2}
+78
+echo ${string:7:-2}
+7890abcdef
+echo ${string: -7}
+bcdefgh
+echo ${string: -7:0}
+
+echo ${string: -7:2}
+bc
+echo ${string: -7:-2}
+bcdef
+set -- 01234567890abcdefgh
+echo ${1:7}
+7890abcdefgh
+echo ${1:7:0}
+
+echo ${1:7:2}
+78
+echo ${1:7:-2}
+7890abcdef
+echo ${1: -7}
+bcdefgh
+echo ${1: -7:0}
+
+echo ${1: -7:2}
+bc
+echo ${1: -7:-2}
+bcdef
+array[0]=01234567890abcdefgh
+echo ${array[0]:7}
+7890abcdefgh
+echo ${array[0]:7:0}
+
+echo ${array[0]:7:2}
+78
+echo ${array[0]:7:-2}
+7890abcdef
+echo ${array[0]: -7}
+bcdefgh
+echo ${array[0]: -7:0}
+
+echo ${array[0]: -7:2}
+bc
+echo ${array[0]: -7:-2}
+bcdef
+```
+
+Para conocer el largo de una string :
+
+```
+nombre='Matias'
+echo ${#nombre}
+6
+```
+
+Para conocer el largo de un array : 
+
+```
+frutas=('Banana' 'Manzana' 'Pera')
+echo ${#frutas[@]}
+3
+```
+
+Obtener una substring borrando desde el comienzo de la string. Con un solo simbolo **#** se busca el match mas corto, mientras que con dos **##** se busca el mas largo. Por ejemplo, para borrar un prefijo de nombres de archivo :
+
+```
+filename="data_20181229121512"
+echo ${filename#*_}
+20181229121512
+```
+
+A modo analogo, para borrar parte de una cadena de texto desde el final, por ejemplo para borrar la extension de una archivo :
+
+```
+filename="my_picture.jpg"
+echo ${filename%.*}
+my_picture
+```
+
+Aca se ve mas claro la differencia entre **#** y **##**, por ejemplo, si el nombre de archivo tiene mas de una extension :
+
+```
+filename="my_picture.jpg.txt.zip"   ## Solo nos va a borrar la primera apariencia. Para borrar todo debemos utilizar dos simbolos %
+echo ${filename%.*}
+my_picture.jpg.txt  
+echo ${filename%%.*}                ## Ahora si!
+my_picture
+```
+
+#### String substitution
+
+El formato es  : **${parameter/pattern/string}** donde *pattern* **NO ES** una expresion regular, sino mas bien un globbing pattern. Por ejemplo :
+
+```
+address="matias@gmail.com"
+echo ${address/gmail.com/yahoo.com}
+matias@yahoo.com
+echo ${address/matias/XXXXX}
+XXXXX@gmail.com
+echo ${address/[a-zA-Z]/?}   ## NO ES UNA EXPRESION REGULAR!!
+?atias@gmail.com
+```
+
+#### ToUpper and ToLower
+
+Se puede convertir el valor del primer parametro a mayusculas con **^** o a minusculas con **,**. Si se repite el simbolo, por ejemplo en el caso de **^^**, se pasa a mayusculas tdos los caracteres del string y no solo el primero. Por ejemplo : 
+
+```
+nombre='matias'
+echo ${nombre^}
+Matias
+echo ${nombre^^^}
+matias
+echo ${nombre^^}
+MATIAS
+```
+
+De forma analoga, se puede pasar a minusculas :
+
+```
+nombre='MATIAS'
+matiasbarrios@~
+echo ${nombre,}
+mATIAS
+echo ${nombre,,}
+matias
+```
+
+Si se pasa un array como parametro, la transformacion se aplica a cada elemento del iterable :
+
+```
+frutas=('Banana' 'Manzana' 'Pera')
+echo ${frutas[@],,}
+banana manzana pera
+```
+
+
