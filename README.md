@@ -360,3 +360,31 @@ echo $(( valor1 * valor2 * 2  ))
 182
 ```
 
+Si se quiere hacer realizar una referencia a las variables que recibe un script como parametro, antecedemos el numero de la misma con el simbolo **$**. Por ejemplo : 
+
+```
+cat m.sh
+  #!/bin/bash
+
+  echo $1
+  echo $(( 1 * 4 ))
+  echo $(( $1 * 4 ))
+./m.sh 10
+10
+4
+40
+```
+
+Para realizar un incremento, decremento como en la sintaxis de C/C++, se debe omitir el simbolo **$** :
+
+```
+i=1
+(( i++))
+echo $i
+2
+(( i-- ))
+echo $i
+1
+```
+
+
