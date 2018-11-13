@@ -140,3 +140,52 @@ echo "val$valval"
 val      ## Solo imprime literalmente val, y luego busca la variable valval, la cual no existe, por lo tanto no imprime nada.
 ```
 
+#### Indirect expansion
+
+Se puede hacer que la shell reemplace el valor del parametro por una string si el primer caracter es un simbolo de explamacion *!* y a su vez reemplace ese valor como si fuera una variable misma, por ejemplo :
+
+```
+val="numero"
+numero=254
+echo ${!val}
+254
+```
+
+#### Testeo de nulidad
+
+Se puede testear los contenidos de dos valores y devolver uno de ellos dependiendo de cierta logica. Por ejemplo, en este caso, se testea si el valor del primer parametro es nulo, y en caso afirmativo, se devuelve el valor del segundo parametro :
+
+```
+echo ${num:-13}   ## Aca el valor de num nunca fue seteado, por lo tanto se devuelve un 13
+13
+num=20            ## Aca seteamos num a 20, por lo tanto ahora nos devuelve el valor de num.
+echo ${num:-13}
+20
+```
+
+Tambien se pueden utilizar variables obviamente, pero debemos anidar la expansion: 
+
+```
+precio=200                           ## Seteamos precio a 200
+echo ${no_existo:-${precio}}         ## devolvemos el valor de precio 
+200
+echo ${no_existo:-precio}            ## Sin anidado nos devuelve el valor literal
+precio
+```
+
+Con el simbolo de **=**, lo que hacemos es asignar primero y devolver despues. Por ejemplo :
+
+```
+echo ${no_existo:=200}   ## No solamente devolvemos el valor, sino que ademas lo asignamos a la variable no_existo
+200
+echo $no_existo
+200
+```
+
+Con el simbolo de **?**, podemos devolver un mensaje que va a parar al **stderr**. Por ejemplo :
+
+```
+unset no_existo
+echo ${no_existo:?'La variable no existe!'}
+-bash: no_existo: La variable no existe!
+```
