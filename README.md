@@ -347,4 +347,16 @@ echo ${frutas[@],,}
 banana manzana pera
 ```
 
+## Arithmetic Expansion
+
+Para realizar la expansion aritmetica se deben poner los parametros dentro de : **$ ((  ))**. Dentro de esta sintaxis los valores literales se toman como tales y los string se toman como variables. Por ejemplo : 
+
+```
+valor1=13
+valor2=7
+echo $(( valor1 * valor2 ))
+91
+echo $(( valor1 * valor2 * 2  ))
+182
+```
 
